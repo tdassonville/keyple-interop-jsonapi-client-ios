@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 ///////////////////////////////////////////////////////////////////////////////
 // GRADLE CONFIGURATION
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,14 +24,19 @@ tasks {
 
 kotlin {
   if (System.getProperty("os.name").lowercase().contains("mac")) {
+    val xcframeworkName = rootProject.name
+
+    val xcf = XCFramework(xcframeworkName)
+
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
       iosTarget.binaries.framework {
-        baseName = rootProject.name
+        baseName = xcframeworkName
         isStatic = true
+        xcf.add(this)
         export(libs.keypleInteropJsonapiClientKmpLib)
         export(libs.keypleInteropLocalreaderNfcmobileKmpLib)
         // Configure Info.plist
-        binaryOption("bundleId", rootProject.name)
+        binaryOption("bundleId", "org.eclipse.keyple.$xcframeworkName")
         binaryOption("bundleVersion", "2")
         binaryOption("bundleShortVersionString", version.toString())
       }
