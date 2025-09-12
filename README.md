@@ -1,167 +1,54 @@
-# Keyple Demo Ticketing Ecosystem
+# Keyple Interop Distributed Client iOS XCFramework
 
 [![License](https://img.shields.io/badge/license-BSD_3_Clause-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/java-8%2B-orange.svg)](https://openjdk.java.net/)
 [![Android](https://img.shields.io/badge/android-7.0%2B-green.svg)](https://developer.android.com/)
 
-A comprehensive open source ticketing ecosystem demonstrating the [Eclipse Keyple middleware](https://keyple.org) in real-world use cases. This project is provided by the [Calypso Networks Association](https://calypsonet.org) and serves as a foundation for building contactless card and NFC smartphone-based ticketing systems.
+This project packages Keyple Interop Distributed Client libraries as a convenient XCFramework for seamless integration into iOS applications.
 
 ## Overview
+It acts as an umbrella, packaging:
 
-The Keyple Demo Ecosystem consists of three interconnected applications that simulate a complete public transportation ticketing workflow:
+*   [Keyple Interop Distributed JSON API Client](https://github.com/eclipse-keyple/keyple-interop-jsonapi-client-kmp-lib): Enables communication with remote Keyple-compliant services using a JSON API.
+*   [Keyple Interop NFC Mobile Local Reader](https://github.com/eclipse-keyple/keyple-interop-localreader-nfcmobile-kmp-lib): Facilitates interaction with local NFC card readers on mobile devices.
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   RELOAD DEMO   │────>│ VALIDATION DEMO │────>│  CONTROL DEMO   │
-│                 │     │                 │     │                 │
-│ Load contracts  │     │ Validate entry  │     │ Check validity  │
-│ onto cards      │     │ to transport    │     │ after use       │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-```
 
-### Application Roles
+### Key Features
 
-- **[Reload Demo](src/reloading-remote/)**: Remote contract loading using distributed client/server architecture
-- **[Validation Demo](src/validation/)**: Entry validation for transportation networks
-- **[Control Demo](src/control/)**: Post-validation card inspection and compliance checking
+*   Provides a ready-to-use XCFramework for integrating Keyple Interop Distributed Client functionality into iOS apps.
+*   Includes helper utilities (e.g. for logging) to streamline development.
+*   Enables your iOS application to communicate with remote Keyple services and interact with smart cards via local NFC readers.
+
+### Target Audience
+
+iOS developers building applications that require:
+*   Secure element interaction capabilities.
+*   Communication with smart cards via NFC.
+*   Interaction with remote Keyple-compliant services.
+
+Refer to [Keyple Interop Distributed JSON API Client](https://github.com/eclipse-keyple/keyple-interop-jsonapi-client-kmp-lib) for code usage.
+
+Note: A Kotlin Multiplatform Mobile implementation is demonstrated in the project [Keyple Demo Ticketing](https://github.com/calypsonet/keyple-demo-ticketing/tree/main/src/reloading-remote/client/interop-mobile-multiplatform)
+
 
 ## Supported Card Technologies
 
-### Calypso Cards
-Standard Calypso contactless cards supporting:
-- Secure sessions with SAM authentication
-- Multiple contracts (1-4 depending on product type)
-- Cryptographic security operations
-- Full transaction traceability
-
-### Storage Cards
-Simple storage cards featuring:
-- Basic read/write operations without SAM requirements
-- Single contract storage
-- Simplified validation procedures
-- **Note**: This demo implementation is intentionally basic for demonstration purposes
-
-**Security Consideration**: Storage Card implementations in this demo lack production-level security mechanisms. Production deployments should implement appropriate cryptographic protections, signature verification, and secure key management.
-
-## Architecture
-
-### Distributed Client/Server Model
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   Mobile/Web    │     │   Java Server   │     │      SAM        │
-│    Clients      │────>│   + Dashboard   │────>│   (Security)    │
-│                 │     │                 │     │                 │
-│ User Interface  │     │ Business Logic  │     │ Cryptographic   │
-│ Card Interface  │     │ Data Management │     │   Operations    │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-```
-
-### Supported Platforms
-
-**Client Applications:**
-- Android 7.0+ (Native and KMP)
-- iOS 14+ (KMP)
-- Windows Desktop (.NET 7.0)
-- JVM Desktop (Kotlin Multiplatform)
-
-**Server Requirements:**
-- Java 8+ with PC/SC reader
-- SAM (Security Access Module) for Calypso cards
-- Web dashboard for monitoring
-
-## Quick Start
-
-### 1. Server Setup
-```bash
-# Download latest server release
-wget https://github.com/calypsonet/keyple-demo-ticketing/releases/latest
-
-# Start server (requires PC/SC reader with SAM)
-java -jar kdt-reloading-server-X.Y.Z-full.jar
-
-# Access dashboard at http://localhost:8080
-```
-
-### 2. Card Personalization
-Use any client application's personalization feature to initialize cards with:
-- Environment data (validity dates, application number)
-- Clean contract slots
-- Reset event logs and counters
-
-### 3. Workflow Execution
-1. **Load Contracts**: Use Reload Demo to add Season Pass or Multi-trip tickets
-2. **Validate Entry**: Present card to Validation Demo terminal
-3. **Control Check**: Verify card status using Control Demo
-
-## Supported Hardware
-
-### Tested Terminals
-- **Famoco FX205** - Enterprise NFC terminal
-- **Coppernic C-One 2** - Rugged Android terminal
-- **Standard NFC Smartphones** - Consumer devices
-- **PC/SC Readers** - Desktop integration
-
-### Proprietary Plugins (Available on Request)
-- Bluebird EF501
-- Flowbird Axio 2
-
-Contact [CNA](https://calypsonet.org/contact-us/) for access to proprietary terminal plugins.
-
-## Data Model
-
-The ecosystem uses standardized data structures defined in the [Common Library](src/common/):
-
-- **Environment Record**: Card metadata and validity information
-- **Event Log**: Transaction history and validation events
-- **Contract Records**: Transportation titles and their properties
-- **Counter Files**: Usage tracking for multi-trip and stored value
-
-See [Common Library Documentation](src/common/README.md) for detailed specifications.
+Using this library, iPhones are able to communicate with the following card technologies: 
+FIXME
 
 ## Development
 
 ### Prerequisites
-- JDK 8+ for server components
-- Android Studio for mobile development
-- Node.js for web dashboard
-- PC/SC compatible readers for testing
+- A mac (M -- arm based) to build the iOS Framework
 
-### Project Structure
-```
-keyple-demo-ticketing/
-├── README.md                               # This file
-├── src/common/                             # Shared data structures and utilities
-├── src/reloading-remote/                   # Remote reload clients and server
-│   ├── server/                             # Java server application
-│   ├── client/
-│   │   ├── keyple-mobile-android/          # Android native client
-│   │   ├── pc-dotnet/                      # .NET desktop client  
-│   │   └── interop-mobile-multiplatform/   # Kotlin Multiplatform client
-├── src/validation/                         # Android validation terminal
-└── src/control/                            # Android control terminal
-```
+### Supported Platforms
+- iOS 14+
 
 ### Building from Source
 ```bash
-# Build all components
-./gradlew build
-
-# Run tests
-./gradlew test
-
-# Start development server
-./gradlew startServer
+# Build the iOS Framework
+./gradlew assembleXCFramework
 ```
-
-## Card Application Identifiers
-
-Compatible Calypso card AIDs:
-- `A000000291FF9101` - Keyple Generic test card
-- `315449432E49434131` - CD Light/GTML Compatibility
-- `315449432E49434133` - Calypso Light
-- `A0000004040125090101` - Navigo IDF
-
-Test cards available in the [CNA Test Kit](https://calypsonet.org/technical-support-documentation/).
 
 ## Contributing
 
@@ -184,6 +71,7 @@ This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICE
 
 ## Related Projects
 
+- [Keyple Demo Ticketing](https://github.com/calypsonet/keyple-demo-ticketing/)
+- [Keyple Distributed JSON API](https://keyple.org/learn/user-guide/distributed-json-api-1-0/)
 - [Eclipse Keyple middleware](https://keyple.org) - Core SDK and plugins
 - [Calypso Card Specification](https://calypsonet.org/technical-specifications/)
-- [Keyple Distributed JSON API](https://keyple.org/learn/user-guide/distributed-json-api-1-0/)
